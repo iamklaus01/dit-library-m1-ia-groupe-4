@@ -1,18 +1,15 @@
 from fastapi import FastAPI
-from .database import engine, Base
-from .routes import router
-
+from .routes import book_router, tag_router
 
 app = FastAPI(
     title="Books Service",
-    description="Microservice de gestion des livres - Librairie DIT",
+    description="Microservice de gestion des livres - DIT Library",
     version="1.0.0"
 )
 
-# Pour enregistrer les routes
-app.include_router(router)
+app.include_router(tag_router)
+app.include_router(book_router)
 
-# Pour vérifier que tout est ok
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "books-service"}
