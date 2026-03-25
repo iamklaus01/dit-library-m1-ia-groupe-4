@@ -1,0 +1,7 @@
+**/.env
+__pycache__/
+*.pyc
+node_modules/
+books_env/
+users_env/
+book_loans_env/
