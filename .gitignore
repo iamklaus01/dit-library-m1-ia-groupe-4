@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 node_modules/
-books_env/
-users_env/
-book_loans_env/
+**/venv/
+**/books_env/
+**/users_env/
+**/loans_env/
