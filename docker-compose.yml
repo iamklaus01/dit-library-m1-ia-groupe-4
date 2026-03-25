@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dit-library-network
+
+  books-service:
+    build: ./_books_service
+    ports:
+      - "8001:8001"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      USERS_SERVICE_URL: http://users-service:8002
+      SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - db
+    networks:
+      - dit-library-network
+
+  users-service:
+    build: ./_users_service
+    ports:
+      - "8002:8002"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - db
+    networks:
+      - dit-library-network
+
+  book-loans-service:
+    build: ./_book_loans_service
+    ports:
+      - "8003:8003"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      BOOKS_SERVICE_URL: http://books-service:8001
+      USERS_SERVICE_URL: http://users-service:8002
+      SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - db
+      - books-service
+      - users-service
+    networks:
+      - dit-library-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - books-service
+      - users-service
+      - book-loans-service
+    networks:
+      - dit-library-network
+
+volumes:
+  postgres_data:
+
+networks:
+  dit-library-network:
+    driver: bridge
