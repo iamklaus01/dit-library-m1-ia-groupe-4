@@ -88,13 +88,32 @@ Le pipeline CI/CD est défini dans le fichier `Jenkinsfile` à la racine du proj
 
 **Deploy** - Jenkins arrête les anciens conteneurs et relance tout avec `docker-compose up -d`.
 
-### Configurer Jenkins
+### Configurer Jenkins sur la machine directement
 
 1. Installer Jenkins sur la machne
 2. Créer un nouveau job de type **Pipeline**
 3. Dans la configuration, pointer vers ce dépôt GitHub
 4. Activer le webhook GitHub pour déclencher le pipeline automatiquement à chaque push
 5. Jenkins lira le `Jenkinsfile` et exécutera le pipeline
+
+### Configurer Jenkins avec Docker
+
+```bash
+docker run -d -p 8080:8080 -p 50000:50000 \
+  --name jenkins \
+  --restart=on-failure \
+  -v jenkins_home:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  jenkins/jenkins:lts
+```
+
+Récupèrer le mot de passe initial :
+
+```bash
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+Accèder à Jenkins sur `http://localhost:8080` et suivre l'assistant de configuration.
 
 ## 4. Structure du projet
 
