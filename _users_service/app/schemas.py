@@ -12,7 +12,6 @@ class UserBase(BaseModel):
     firstname : str
     surname : str
     role : RoleEnum
-    password : str
 
 # Ce que l'API doit recevoir pour créer un utilisateur
 class UserCreate(UserBase):
@@ -24,7 +23,17 @@ class UserUpdate(BaseModel):
     firstname: Optional[str] = None
     surname  : Optional[str] = None
 
+class UserCreateResponse(BaseModel):
+    id         : UUID
+    email      : str
+    firstname  : str
+    surname    : str
+    role       : RoleEnum
+    created_at : datetime
+    generated_password : str
 
+    class Config:
+        from_attributes = True
 class UserRoleUpdate(BaseModel):
     role : RoleEnum
 

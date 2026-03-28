@@ -10,6 +10,9 @@ from .auth import (
     get_current_user, require_role
 )
 from .models import RoleEnum
+import string
+import secrets
+
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -77,8 +80,11 @@ def get_user(
         raise HTTPException(status_code=404, detail="Utilisateur non trouve")
     return user
 
+def generate_password(length=10):
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(length))
 
-@router.post("/", response_model=schemas.UserResponse, status_code=201)
+@router.post("/", response_model=schemas.UserCreateResponse, status_code=201)
 def create_user(
     user: schemas.UserCreate,
     db: Session = Depends(get_db),
@@ -87,13 +93,15 @@ def create_user(
     existing = db.query(models.User).filter(models.User.email == user.email).first()
     if existing:
         raise HTTPException(status_code=400, detail="Email deja utilise")
+    
+    generated_password = generate_password()
     user_data = user.model_dump()
-    user_data["password"] = hash_password(user_data["password"])
+    user_data["password"] = hash_password(generated_password)
     db_user = models.User(**user_data)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return {**db_user.__dict__, "generated_password": generated_password}
 
 
 @router.put("/{user_id}/role", response_model=schemas.UserResponse)
