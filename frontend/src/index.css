@@ -1,0 +1,60 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  --color-primary: #014955;
+  --color-primary-light: #EAF3DE;
+  --color-primary-hover: #4f7f88;
+  --color-accent: #e9b45c;
+  --color-accent-light: #FAEEDA;
+
+  --color-bg: #F5F5F5;
+  --color-surface: #ffffff;
+  --color-border: #e0e0e0;
+
+  --color-text-primary: #212121;
+  --color-text-secondary: #888888;
+  --color-text-muted: #b0b0b0;
+
+  --color-success-bg: #EAF3DE;
+  --color-success-text: #27500A;
+  --color-warning-bg: #FAEEDA;
+  --color-warning-text: #633806;
+  --color-danger-bg: #FCEBEB;
+  --color-danger-text: #791F1F;
+
+  --sidebar-width: 220px;
+  --topbar-height: 52px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+
+/* main vert #014955 */
+/* main jaune : ##e9b45c */
+/* possible hover ##6b9757, #2596be, #4f7f88 */
+
+
+
+/* 
+former main primary : 1B5E20;
+former accent FFB300
+former hover : 154d1a
+ */
