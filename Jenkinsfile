@@ -9,14 +9,14 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Récupération du code source de l\'app depuis Github...'
+                echo 'Récupération du code source de l\'application depuis Github...'
                 checkout scm
             }
         }
 
         stage('Vérification') {
             steps {
-                echo 'Check de la structure du projet...'
+                echo 'Controle de la structure du projet...'
                 sh '''
                     test -f docker-compose.yml && echo "docker-compose.yml OK"
                     test -d _books_service && echo "books-service OK"
