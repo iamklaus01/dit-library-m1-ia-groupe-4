@@ -16,7 +16,7 @@ pipeline {
 
         stage('Vérification') {
             steps {
-                echo 'Controle de la structure du projet...'
+                echo 'Contrôle de la structure du projet...'
                 sh '''
                     test -f docker-compose.yml && echo "docker-compose.yml OK"
                     test -d _books_service && echo "books-service OK"
